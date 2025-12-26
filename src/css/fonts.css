@@ -1,0 +1,26 @@
+/* Inter – normal */
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter – italic */
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-italic-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Outfit */
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/outfit-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

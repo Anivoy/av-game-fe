@@ -1,0 +1,143 @@
+@import "./fonts.css";
+
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  /* Fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  --font-heading: "Outfit", "Inter", ui-sans-serif;
+
+  /* Background colors */
+  --color-background: #10121c;
+  --color-background-light: #191c2a;
+  --color-background-lighter: #292e46;
+  --color-background-dark: #0a0c14;
+  
+  /* Card colors */
+  --color-card-from: #292e46;
+  --color-card-to: #191c2a;
+  --color-card-border-from: #191c2a;
+  --color-card-border-to: #6d738d;
+  
+  /* Primary colors */
+  --color-primary-50: #fef2f2;
+  --color-primary-100: #fee2e2;
+  --color-primary-200: #fecaca;
+  --color-primary-300: #fca5a5;
+  --color-primary-400: #f87171;
+  --color-primary-500: #f35540;
+  --color-primary-600: #dc2626;
+  --color-primary-700: #b91c1c;
+  --color-primary-800: #991b1b;
+  --color-primary-900: #91172b;
+  --color-primary-950: #7f0000;
+  --color-primary: #f35540;
+  --color-primary-from: #f35540;
+  --color-primary-to: #91172b;
+  
+  /* Secondary colors */
+  --color-secondary-50: #f0f9ff;
+  --color-secondary-100: #e0f2fe;
+  --color-secondary-200: #bae6fd;
+  --color-secondary-300: #7dd3fc;
+  --color-secondary-400: #7f9dc9;
+  --color-secondary-500: #3c557a;
+  --color-secondary-600: #2e4763;
+  --color-secondary-700: #1e3a5f;
+  --color-secondary-800: #1e3a5f;
+  --color-secondary-900: #1a2f4d;
+  --color-secondary-950: #0f1f35;
+  --color-secondary: #3c557a;
+  --color-secondary-from: #3c557a;
+  --color-secondary-to: #7f9dc9;
+  
+  /* Success colors */
+  --color-success-800: #179133;
+  --color-success-500: #2ee85a;
+  --color-success: #179133;
+  --color-success-from: #179133;
+  --color-success-to: #2ee85a;
+  
+  /* Warning colors */
+  --color-warning-800: #916617;
+  --color-warning-500: #e9bd0c;
+  --color-warning: #916617;
+  --color-warning-from: #916617;
+  --color-warning-to: #e9bd0c;
+  
+  /* Error colors */
+  --color-error-800: #911717;
+  --color-error-500: #da3f3f;
+  --color-error: #911717;
+  --color-error-from: #911717;
+  --color-error-to: #da3f3f;
+  
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #6d738d;
+  
+  /* Shadows */
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -1px rgb(0 0 0 / 0.2);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -2px rgb(0 0 0 / 0.3);
+  --shadow-inner-highlight: inset 0 2px 4px 0 rgb(255 255 255 / 0.45);
+  --shadow-glow-primary: 0 0 20px rgb(243 85 64 / 0.5);
+  
+  /* Border radius */
+  --radius-card: 12px;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+  }
+
+  .responsive-container {
+    padding-inline: 5%;
+  }
+
+  /* Tablet */
+  @media (min-width: 640px) {
+    .responsive-container {
+      padding-inline: 6%;
+    }
+  }
+
+  /* Laptop */
+  @media (min-width: 1024px) {
+    .responsive-container {
+      padding-inline: 8%;
+    }
+  }
+
+  /* Desktop */
+  @media (min-width: 1280px) {
+    .responsive-container {
+      padding-inline: 12%;
+    }
+  }
+}
+
+@keyframes scroll-pulse {
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+}
+
+.animate-scroll-pulse {
+  animation: scroll-pulse 1.6s ease-in-out infinite;
+}
