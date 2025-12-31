@@ -105,7 +105,7 @@ export default function Hero() {
               <motion.div variants={itemVariants}>
                 <Button
                   as={Link}
-                  to="/game?mode=quick-play"
+                  to="/play"
                   size="md"
                   color="primary"
                   endIcon={<MapPinned size={20} />}

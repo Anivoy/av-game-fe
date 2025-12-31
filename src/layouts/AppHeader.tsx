@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router";
 import Button from "@/components/ui/Button";
 import { HamburgerIcon } from "lucide-react";
-import { useSidebar } from "@/stores/sidebar";
+import { useSidebar } from "@/stores/sidebar.store";
 import Card from "@/components/ui/Card";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth.store";
 import UserDropdown from "@/components/common/UserDropdown";
 
 const navigation = [

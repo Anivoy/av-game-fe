@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth.store";
 import { useSignOut } from "@/hooks/useAuthApi";
 import { ChevronDown, LogOut, User } from "lucide-react";
 import { cn } from "@/utils/cn";

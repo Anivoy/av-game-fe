@@ -1,9 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
-import { authApi } from '@/api/authApi';
-import { useAuthStore } from '@/stores/auth';
-import { AxiosError } from 'axios';
-import { toastAlert } from '@/components/ui/alert/ToastAlert';
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { authApi } from "@/api/authApi";
+import { useAuthStore } from "@/stores/auth.store";
+import { AxiosError } from "axios";
+import { toastAlert } from "@/components/ui/alert/ToastAlert";
 
 export const useSignIn = () => {
   const navigate = useNavigate();
@@ -18,15 +18,18 @@ export const useSignIn = () => {
         title: "Sign In Success",
         message: `Welcome back ${data.user.displayName} to Anivoy.`,
       });
-      navigate('/');
+      navigate("/");
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toastAlert({
         variant: "error",
         title: "Sign In Error",
         message: error.response?.data?.message || error.message,
-      })
-      console.error('Sign in failed:', error.response?.data?.message || error.message);
+      });
+      console.error(
+        "Sign in failed:",
+        error.response?.data?.message || error.message
+      );
     },
   });
 };
@@ -49,8 +52,11 @@ export const useSignUp = () => {
         variant: "error",
         title: "Sign Up Error",
         message: error.response?.data?.message || error.message,
-      })
-      console.error('Sign up failed:', error.response?.data?.message || error.message);
+      });
+      console.error(
+        "Sign up failed:",
+        error.response?.data?.message || error.message
+      );
     },
   });
 };
@@ -62,15 +68,18 @@ export const useSignOut = () => {
   return useMutation({
     mutationFn: authApi.signOut,
     onSuccess: () => {
-      setLogoutReason("manual");
-      navigate('/signin');
+      setLogoutReason("MANUAL");
+      navigate("/signin");
       clearAuth();
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      console.error('Sign out failed:', error.response?.data?.message || error.message);
-      setLogoutReason("manual");
+      console.error(
+        "Sign out failed:",
+        error.response?.data?.message || error.message
+      );
+      setLogoutReason("MANUAL");
       clearAuth();
-      navigate('/signin');
+      navigate("/signin");
     },
   });
 };
@@ -90,11 +99,14 @@ export const useResetPassword = () => {
         variant: "error",
         title: "Reset Password Request Error",
         message: error.response?.data?.message || error.message,
-      })
-      console.error('Reset password request failed:', error.response?.data?.message || error.message);
-    }
-  })
-}
+      });
+      console.error(
+        "Reset password request failed:",
+        error.response?.data?.message || error.message
+      );
+    },
+  });
+};
 
 export const useChangePassword = () => {
   const navigate = useNavigate();
@@ -114,8 +126,11 @@ export const useChangePassword = () => {
         variant: "error",
         title: "Change Password Error",
         message: error.response?.data?.message || error.message,
-      })
-      console.error('Change password failed:', error.response?.data?.message || error.message);
+      });
+      console.error(
+        "Change password failed:",
+        error.response?.data?.message || error.message
+      );
     },
   });
-}
+};

@@ -1,30 +1,33 @@
-import axios from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth.store";
 
-const api_url = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const api_url = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 export const axiosInstance = axios.create({
   baseURL: api_url,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 let isRefreshing = false;
-let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
+let failedQueue: {
+  resolve: (value: unknown) => void;
+  reject: (reason?: any) => void;
+}[] = [];
 
 let refreshAttempts = 0;
 const MAX_REFRESH_ATTEMPTS = 3;
 
 const processQueue = (error: unknown, token = null) => {
-  failedQueue.forEach(prom => {
+  failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
     } else {
       prom.resolve(token);
     }
   });
-  
+
   failedQueue = [];
 };
 
@@ -46,8 +49,9 @@ export function setupAxiosInterceptors() {
       const { config, response } = error;
       const originalRequest = config;
 
-      const isAuthRequest = config?.url?.includes('/auth/login') ||
-        config?.url?.includes('/auth/register');
+      const isAuthRequest =
+        config?.url?.includes("/auth/login") ||
+        config?.url?.includes("/auth/register");
 
       if (isAuthRequest) {
         return Promise.reject(error);
@@ -61,9 +65,9 @@ export function setupAxiosInterceptors() {
 
       if (response?.status === 401 && !originalRequest._retry) {
         if (refreshAttempts >= MAX_REFRESH_ATTEMPTS) {
-          console.error('Max refresh attempts reached');
+          console.error("Max refresh attempts reached");
           const authStore = useAuthStore.getState();
-          authStore.setLogoutReason("unauthorized");
+          authStore.setLogoutReason("UNAUTHORIZED");
           authStore.clearAuth();
           refreshAttempts = 0;
           return Promise.reject(error);
@@ -75,11 +79,11 @@ export function setupAxiosInterceptors() {
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           })
-            .then(token => {
-              originalRequest.headers['Authorization'] = `Bearer ${token}`;
+            .then((token) => {
+              originalRequest.headers["Authorization"] = `Bearer ${token}`;
               return axiosInstance(originalRequest);
             })
-            .catch(err => {
+            .catch((err) => {
               return Promise.reject(err);
             });
         }
@@ -101,27 +105,25 @@ export function setupAxiosInterceptors() {
 
           useAuthStore.getState().setToken(newAccessToken);
 
-          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
           processQueue(null, newAccessToken);
 
           refreshAttempts = 0;
 
           return axiosInstance(originalRequest);
-
         } catch (refreshError) {
           processQueue(refreshError, null);
 
-          console.error('Token refresh failed:', refreshError);
+          console.error("Token refresh failed:", refreshError);
 
           const authStore = useAuthStore.getState();
-          authStore.setLogoutReason("unauthorized");
+          authStore.setLogoutReason("UNAUTHORIZED");
           authStore.clearAuth();
 
           refreshAttempts = 0;
 
           return Promise.reject(refreshError);
-
         } finally {
           isRefreshing = false;
         }
@@ -131,4 +133,3 @@ export function setupAxiosInterceptors() {
     }
   );
 }
-

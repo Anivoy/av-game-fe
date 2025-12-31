@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 
 import "./css/index.css";
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 import App from "./App.tsx";
 

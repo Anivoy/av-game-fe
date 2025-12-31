@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, Outlet } from "react-router";
 import { setupAxiosInterceptors } from "@/utils/axios";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import { lazy, Suspense } from "react";
@@ -12,6 +12,8 @@ const SignIn = lazy(() => import("@/pages/Auth/SignIn"));
 const SignUp = lazy(() => import("@/pages/Auth/SignUp"));
 const ResetPassword = lazy(() => import("@/pages/Auth/ResetPassword"));
 const ChangePassword = lazy(() => import("@/pages/Auth/ChangePassword"));
+
+const GameSession = lazy(() => import("@/pages/Game/Session"));
 
 export default function MainRoutes() {
   setupAxiosInterceptors();
@@ -31,15 +33,24 @@ export default function MainRoutes() {
         />
       </Route>
 
-      {/* Protected Routes */}
+      {/* Protected Game Session Routes */}
       <Route
         element={
           <ProtectedRoute>
-            <AppLayout />
+            <main className="flex-1 min-h-screen">
+              <Outlet />
+            </main>
           </ProtectedRoute>
         }
       >
-        {/* <Route path="/play" element={<Game />} /> */}
+        <Route
+          path="/play"
+          element={
+            <Suspense fallback={<LinearProgress loading />}>
+              <GameSession />
+            </Suspense>
+          }
+        />
       </Route>
 
       {/* Auth Routes */}

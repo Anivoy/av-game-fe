@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { useSidebar } from "@/stores/sidebar";
+import { useSidebar } from "@/stores/sidebar.store";
 import { XIcon } from "lucide-react";
 
 const navigation = [

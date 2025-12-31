@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSidebar } from "@/stores/sidebar";
+import { useSidebar } from "@/stores/sidebar.store";
 
 export default function SidebarBootstrap() {
   const refreshMobileState = useSidebar((s) => s.refreshMobileState);

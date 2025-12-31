@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface User {
   id: string;
@@ -12,7 +12,7 @@ interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  logoutReason: null | "manual" | "unauthorized";
+  logoutReason: null | "MANUAL" | "UNAUTHORIZED";
   setLogoutReason: (r: AuthState["logoutReason"]) => void;
   setAuth: (user: User, token: string) => void;
   setToken: (token: string) => void;
@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
     }
   )
 );

@@ -16,13 +16,13 @@
   --color-background-light: #191c2a;
   --color-background-lighter: #292e46;
   --color-background-dark: #0a0c14;
-  
+
   /* Card colors */
   --color-card-from: #292e46;
   --color-card-to: #191c2a;
   --color-card-border-from: #191c2a;
   --color-card-border-to: #6d738d;
-  
+
   /* Primary colors */
   --color-primary-50: #fef2f2;
   --color-primary-100: #fee2e2;
@@ -38,7 +38,7 @@
   --color-primary: #f35540;
   --color-primary-from: #f35540;
   --color-primary-to: #91172b;
-  
+
   /* Secondary colors */
   --color-secondary-50: #f0f9ff;
   --color-secondary-100: #e0f2fe;
@@ -54,39 +54,41 @@
   --color-secondary: #3c557a;
   --color-secondary-from: #3c557a;
   --color-secondary-to: #7f9dc9;
-  
+
   /* Success colors */
   --color-success-800: #179133;
   --color-success-500: #2ee85a;
   --color-success: #179133;
   --color-success-from: #179133;
   --color-success-to: #2ee85a;
-  
+
   /* Warning colors */
   --color-warning-800: #916617;
   --color-warning-500: #e9bd0c;
   --color-warning: #916617;
   --color-warning-from: #916617;
   --color-warning-to: #e9bd0c;
-  
+
   /* Error colors */
   --color-error-800: #911717;
   --color-error-500: #da3f3f;
   --color-error: #911717;
   --color-error-from: #911717;
   --color-error-to: #da3f3f;
-  
+
   /* Text colors */
   --color-text-primary: #ffffff;
   --color-text-secondary: #a0a0a0;
   --color-text-muted: #6d738d;
-  
+
   /* Shadows */
-  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -1px rgb(0 0 0 / 0.2);
-  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -2px rgb(0 0 0 / 0.3);
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3),
+    0 2px 4px -1px rgb(0 0 0 / 0.2);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4),
+    0 4px 6px -2px rgb(0 0 0 / 0.3);
   --shadow-inner-highlight: inset 0 2px 4px 0 rgb(255 255 255 / 0.45);
   --shadow-glow-primary: 0 0 20px rgb(243 85 64 / 0.5);
-  
+
   /* Border radius */
   --radius-card: 12px;
 }
@@ -140,4 +142,13 @@
 
 .animate-scroll-pulse {
   animation: scroll-pulse 1.6s ease-in-out infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

@@ -16,7 +16,7 @@ import { InputGroup } from "@/components/ui/InputGroup";
 
 import { useSignIn } from "@/hooks/useAuthApi";
 import { signInSchema, type SignInFormData } from "@/schemas/authSchema";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth.store";
 
 export default function SignIn() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,16 +43,16 @@ export default function SignIn() {
   };
 
   useEffect(() => {
-    if (logoutReason === "manual") {
+    if (logoutReason === "MANUAL") {
       toastAlert({
         variant: "success",
         title: "Sign Out Success",
         message: "You've been signed out successfully.",
       });
-    } else if (logoutReason === "unauthorized") {
+    } else if (logoutReason === "UNAUTHORIZED") {
       toastAlert({
         variant: "error",
-        title: "Unauthorized",
+        title: "UNAUTHORIZED",
         message: "Session expired, please sign in again.",
       });
     }

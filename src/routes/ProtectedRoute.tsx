@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth.store";
 import { Navigate } from "react-router";
 
 interface ProtectedRouteProps {
@@ -10,7 +10,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   if (!isAuthenticated) {
     if (!logoutReason) {
-      setLogoutReason("unauthorized");
+      setLogoutReason("UNAUTHORIZED");
     }
     return <Navigate to="/signin" replace />;
   }

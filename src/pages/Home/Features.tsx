@@ -122,6 +122,7 @@ export default function Features() {
                   rotate: rotateDeg,
                 }}
                 className="hidden md:block"
+                key={feature.title}
               >
                 <Card
                   className={`
