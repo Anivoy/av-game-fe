@@ -25,20 +25,16 @@ export interface GameState {
 
   stage: "GUESSING" | "REVEALED";
 
-  // Current round data
   guessingScene: GuessingScene | null;
   revealedScene: RevealedScene | null;
   lastRoundResult: RoundResult | null;
 
-  // User interaction (local only, before submit)
   userGuess: Location | null;
 
-  // Loading states
   isLoading: boolean;
   isSubmitting: boolean;
   error: string | null;
 
-  // Actions
   loadSession: (sessionId: string) => Promise<boolean>;
   createGame: (mode?: string) => Promise<void>;
   setGuess: (location: Location) => void;
@@ -68,7 +64,6 @@ const getErrorMessage = (
 export const useGameStore = create<GameState>()(
   persist(
     (set, get) => ({
-      // Initial state
       sessionId: null,
       gameModeId: null,
       gameMode: null,
@@ -77,15 +72,16 @@ export const useGameStore = create<GameState>()(
       totalScore: 0,
       isGameOver: false,
       stage: "GUESSING",
+
       guessingScene: null,
       revealedScene: null,
       lastRoundResult: null,
       userGuess: null,
+
       isLoading: false,
       isSubmitting: false,
       error: null,
 
-      // Load existing session (for resume)
       loadSession: async (sessionId: string) => {
         set({ isLoading: true, error: null });
         try {
@@ -111,13 +107,7 @@ export const useGameStore = create<GameState>()(
             guessingScene: session.guessingScene,
             revealedScene: session.revealedScene,
             lastRoundResult: session.lastRoundResult,
-            // Restore userGuess if in revealed state (from lastRoundResult.guess)
-            userGuess: session.lastRoundResult?.guess
-              ? {
-                  latitude: session.lastRoundResult.guess.latitude,
-                  longitude: session.lastRoundResult.guess.longitude,
-                }
-              : null,
+            userGuess: session.lastRoundResult?.guess || null,
             isLoading: false,
           });
 
@@ -132,7 +122,6 @@ export const useGameStore = create<GameState>()(
         }
       },
 
-      // Create new game session
       createGame: async (mode?: string) => {
         set({ isLoading: true, error: null });
         try {
@@ -170,12 +159,10 @@ export const useGameStore = create<GameState>()(
         }
       },
 
-      // Set user's guess (local state only)
       setGuess: (location: Location) => {
         set({ userGuess: location });
       },
 
-      // Submit guess and automatically reveal
       submitGuess: async () => {
         const { userGuess, sessionId } = get();
 
@@ -192,7 +179,6 @@ export const useGameStore = create<GameState>()(
         set({ isSubmitting: true, error: null });
 
         try {
-          // Step 1: Submit the guess
           const submitResponse = await axiosInstance.post<
             ApiResponse<RoundResult>
           >(`${sessionPath}/${sessionId}/guess`, {
@@ -204,7 +190,6 @@ export const useGameStore = create<GameState>()(
             throw new Error("Failed to submit guess");
           }
 
-          // Step 2: Automatically reveal the scene
           const revealResponse = await axiosInstance.get<
             ApiResponse<GameSession>
           >(`${sessionPath}/${sessionId}/reveal`);
@@ -231,7 +216,6 @@ export const useGameStore = create<GameState>()(
         }
       },
 
-      // Move to next round
       nextRound: async () => {
         const { sessionId } = get();
 
@@ -253,7 +237,6 @@ export const useGameStore = create<GameState>()(
             throw new Error("Session data not found");
           }
 
-          // Check if game is now over
           if (session.isGameOver) {
             set({
               isGameOver: true,
@@ -262,7 +245,6 @@ export const useGameStore = create<GameState>()(
             return;
           }
 
-          // Update to next round
           set({
             currentRound: session.currentRound,
             totalScore: session.totalScore,
@@ -281,7 +263,6 @@ export const useGameStore = create<GameState>()(
         }
       },
 
-      // Reset store (for starting fresh)
       reset: () => {
         set({
           sessionId: null,

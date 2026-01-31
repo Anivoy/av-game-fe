@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useGameStore } from "@/stores/game.store";
 
+import RevealMap from "./RevealMap";
 import RevealDetail from "./RevealDetail";
 import RoundDetail from "./RoundDetail";
 import Button from "@/components/ui/Button";
 
 import { ChevronLeft } from "lucide-react";
 import { cn } from "@/utils/cn";
-import RevealMap from "./RevealMap";
 
 export default function RevealPage() {
   const [asideExpanded, setAsideExpanded] = useState(true);
@@ -23,14 +23,28 @@ export default function RevealPage() {
     nextRound,
   } = useGameStore();
 
+  const snapshotRef = useRef<any>(null);
+
+  if (!isLoading && snapshotRef.current === null) {
+    snapshotRef.current = structuredClone({
+      currentRound,
+      totalRounds,
+      totalScore,
+      revealedScene,
+      lastRoundResult
+    })
+  }
+
+  const snapshot = snapshotRef.current;
+
   return (
     <section className="relative h-screen w-full overflow-hidden flex flex-col justify-end">
       <div className="absolute inset-0 -z-10 pointer-events-auto">
         <RevealMap
-          guessedLocation={lastRoundResult?.guess}
+          guessedLocation={snapshot?.lastRoundResult?.guess}
           revealedLocation={{
-            latitude: revealedScene?.latitude ?? 0,
-            longitude: revealedScene?.longitude ?? 0,
+            latitude: snapshot?.revealedScene?.latitude ?? 0,
+            longitude: snapshot?.revealedScene?.longitude ?? 0,
           }}
         />
       </div>
@@ -61,28 +75,28 @@ export default function RevealPage() {
             ></Button>
           </div>
           <RevealDetail
-            isLoading={isLoading}
-            referenceUrl={revealedScene?.reference}
-            snippetUrl={revealedScene?.snippet}
-            sceneTitle={revealedScene?.name ?? "-"}
-            sceneDescription={revealedScene?.description ?? "-"}
-            showTitle={revealedScene?.showTitle ?? "-"}
+            isLoading={isLoading && !snapshot}
+            referenceUrl={snapshot?.revealedScene?.reference}
+            snippetUrl={snapshot?.revealedScene?.snippet}
+            sceneTitle={snapshot?.revealedScene?.name ?? "-"}
+            sceneDescription={snapshot?.revealedScene?.description ?? "-"}
+            showTitle={snapshot?.revealedScene?.showTitle ?? "-"}
             sceneLocation={{
-              latitude: revealedScene?.latitude ?? 0,
-              longitude: revealedScene?.longitude ?? 0,
+              latitude: snapshot?.revealedScene?.latitude ?? 0,
+              longitude: snapshot?.revealedScene?.longitude ?? 0,
             }}
-            sceneLocationDetails={revealedScene?.location}
-            difficulty={revealedScene?.difficulty}
+            sceneLocationDetails={snapshot?.revealedScene?.location}
+            difficulty={snapshot?.revealedScene?.difficulty}
           />
         </aside>
 
         <div className="absolute p-3 bottom-0 left-1/2 -translate-x-1/2 w-full pointer-events-auto">
           <RoundDetail
-            distance={lastRoundResult?.distance}
-            currentRound={currentRound}
-            totalRounds={totalRounds}
-            roundScore={lastRoundResult?.score ?? 0}
-            totalScore={totalScore}
+            distance={snapshot?.lastRoundResult?.distance}
+            currentRound={snapshot?.currentRound}
+            totalRounds={snapshot?.totalRounds}
+            roundScore={snapshot?.lastRoundResult?.score ?? 0}
+            totalScore={snapshot?.totalScore}
             isGameOver={isGameOver}
             handleNextRound={nextRound}
           />

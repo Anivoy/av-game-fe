@@ -1,12 +1,13 @@
+import { useRef, useState } from "react";
+import { useGameStore } from "@/stores/game.store";
+
 import Button from "@/components/ui/Button";
 import GuessingDetail from "./GuessingDetail";
-import { Sparkles } from "lucide-react";
 import GuessingMap from "./GuessingMap";
 import Snippet from "./Snippet";
-import { useState } from "react";
-import { cn } from "@/utils/cn";
 
-import { useGameStore } from "@/stores/game.store";
+import { Sparkles } from "lucide-react";
+import { cn } from "@/utils/cn";
 
 export default function GuessingPage() {
   const [mapExpanded, setMapExpanded] = useState(false);
@@ -23,6 +24,19 @@ export default function GuessingPage() {
     setGuess,
     submitGuess,
   } = useGameStore();
+
+  const snapshotRef = useRef<any>(null);
+
+  if (!isLoading && snapshotRef.current === null) {
+    snapshotRef.current = structuredClone({
+      guessingScene,
+      currentRound,
+      totalRounds,
+      totalScore
+    });
+  }
+
+  const snapshot = snapshotRef.current;
 
   return (
     <section className="relative px-8 py-12 h-screen w-full flex flex-col justify-end">
@@ -47,9 +61,9 @@ export default function GuessingPage() {
           </Button>
           <GuessingDetail
             mode={gameMode ?? ""}
-            currentRound={currentRound}
-            totalRounds={totalRounds}
-            totalScore={totalScore}
+            currentRound={snapshot?.currentRound}
+            totalRounds={snapshot?.totalRounds}
+            totalScore={snapshot?.totalScore}
             isLoading={isLoading}
           />
         </div>
@@ -76,7 +90,7 @@ export default function GuessingPage() {
           </Button>
         </div>
       </div>
-      <Snippet src={guessingScene?.snippet} isLoading={isLoading} />
+      <Snippet src={snapshot?.guessingScene?.snippet} isLoading={isLoading} />
     </section>
   );
 }
